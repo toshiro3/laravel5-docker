@@ -1,15 +1,6 @@
-FROM php:latest
-MAINTAINER toshiro3<t.ooka.102@gmail.com>
+FROM _AWS_ACCOUNT_ID_.dkr.ecr._AWS_DEFAULT_REGION_.amazonaws.com/_IMAGE_REPO_NAME_:_IMAGE_TAG_
 
-RUN apt-get -yq update \
-  && apt-get -yq install zlib1g-dev
-
-RUN curl -sS https://getcomposer.org/installer | php \
-  && mv composer.phar /usr/local/bin/composer \
-  && docker-php-ext-install zip \
-  && composer global require "laravel/installer"
-
-RUN mkdir /var/www
+ADD laravel5-sample /var/www/app/
 
 WORKDIR /var/www/app
 EXPOSE 9000
