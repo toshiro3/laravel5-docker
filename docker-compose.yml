@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: ./app
+    container_name: laravel5-app
+    ports:
+      - 9000:9000
+    volumes:
+      - ../laravel5-sample:/var/www/app
