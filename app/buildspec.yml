@@ -13,9 +13,9 @@ phases:
     commands:
       - echo "build start"
       - sed -i -e "s/_AWS_ACCOUNT_ID_/$AWS_ACCOUNT_ID/g" -e "s/_AWS_DEFAULT_REGION_/$AWS_DEFAULT_REGION/g" -e "s/_IMAGE_REPO_NAME_/$SRC_IMAGE_REPO_NAME/g" -e "s/_IMAGE_TAG_/$IMAGE_TAG/g" $IMAGE_DIR/Dockerfile
-      - cat $IMAGE_DIR/Dockerfile
       - aws s3 cp --quiet s3://output.codebuild.beer-log.net/laravel5-sample/ $IMAGE_DIR/laravel5-sample --recursive
       - docker build -t $DEST_IMAGE_REPO_NAME $IMAGE_DIR
+      - docker tag $DEST_IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$DEST_IMAGE_REPO_NAME:$IMAGE_TAG
   post_build:
     commands:
       - echo "post_build start"
