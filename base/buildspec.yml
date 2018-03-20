@@ -3,7 +3,6 @@ version: 0.2
 env:
   variables:
     IMAGE_DIR: "base"
-
 phases:
   pre_build:
     commands:
