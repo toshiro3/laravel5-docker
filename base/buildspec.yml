@@ -5,12 +5,18 @@ phases:
     commands:
       - echo "pre_build start"
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - ECR_URL=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
   build:
     commands:
       - echo "build start"
       - docker build -t $IMAGE_REPO_NAME $IMAGE_DIR
-      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $ECR_URL/$IMAGE_REPO_NAME:$IMAGE_TAG
   post_build:
     commands:
       - echo "post_build start"
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker push $ECR_URL/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - mkdir build
+      - zip -rq build/laravel5-docker.zip .
+artifacts:
+  files:
+    - build/laravel5-docker.zip
